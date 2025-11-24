@@ -10,3 +10,5 @@ python-dotenv
 nltk
 scikit-learn
 PyMuPDF
+gunicorn==20.1.0
+firebase-admin
