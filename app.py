@@ -15,6 +15,28 @@ those modules.
 import logging
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.serving import run_simple
+import os, json, base64
+from firebase_admin import credentials, initialize_app
+
+sa_b64 = os.environ.get("SERVICE_ACCOUNT_JSON")
+if sa_b64:
+    try:
+        sa_json = json.loads(base64.b64decode(sa_b64).decode('utf-8'))
+        cred = credentials.Certificate(sa_json)
+        initialize_app(cred)
+        print("Firebase admin initialized from SERVICE_ACCOUNT_JSON")
+    except Exception as e:
+        print("Failed to init firebase admin from SERVICE_ACCOUNT_JSON:", e)
+else:
+    # fallback: either use local file (only for dev) or raise
+    local_path = os.path.join(os.getcwd(), 'serviceAccountKey.json')
+    if os.path.exists(local_path):
+        cred = credentials.Certificate(local_path)
+        initialize_app(cred)
+        print("Firebase admin initialized from local serviceAccountKey.json")
+    else:
+        print("No service account available; continuing without firebase_admin")
+
 
 try:
     # Import the existing Flask apps defined in the repository
