@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Bookmarks | Margadarshi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --primary: #5661fa;
+      --secondary: #1a1f4b;
+      --accent: #ff4d4f;
+      --light-bg: #f4f8ff;
+      --light-hover: #e9ecff;
+      --card-shadow: 0 4px 12px rgba(86,97,250,0.08);
+      --success: #37c871;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      margin: 0;
+      /* keep page content padded but allow header to sit flush */
+      padding: 0 1rem 2rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--secondary);
+    }
+
+    h1 {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 2rem;
+      font-size: 2.7rem;
+      text-align: center;
+    }
+
+    #bookmarkList {
+      list-style: none;
+      padding: 0;
+      width: 100%;
+      max-width: 800px;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      background: white;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    #bookmarkList li {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--light-hover);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #26317c;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      transition: background-color 0.18s, transform 0.12s;
+      padding-right: 170px; /* room for action buttons */
+    }
+
+    #bookmarkList li:hover {
+      background-color: #fcfdff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(34,41,99,0.04);
+    }
+
+    #bookmarkList li:last-child {
+      border-bottom: none;
+    }
+
+    .bookmark-text {
+      flex-grow: 1;
+      margin: 0;
+      white-space: pre-wrap;
+      text-align: left;
+      width: 100%;
+      max-height: 4.5em;
+      overflow: hidden;
+      position: relative;
+      transition: max-height 0.38s ease;
+      color: var(--secondary);
+      font-size: 1rem;
+      padding-right: 8px;
+    }
+
+    .bookmark-text.expanded {
+      max-height: 1000px;
+      transition: max-height 0.6s ease;
+    }
+
+    .expand-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
+      align-self: flex-start;
+      transition: color 0.2s;
+    }
+
+    .expand-btn:hover {
+      color: #3240c1;
+      text-decoration: underline;
+    }
+
+    .bookmark-meta {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 12px;
+      color: #8690ff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    button.action-btn {
+      border: none;
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s, opacity 0.12s;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    button.copy-btn {
+      right: 100px;
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 6px 18px rgba(86,97,250,0.2);
+    }
+
+    button.copy-btn:hover {
+      transform: translateY(-50%) scale(1.03);
+      box-shadow: 0 8px 22px rgba(86,97,250,0.25);
+    }
+
+    button.delete-btn {
+      right: 20px;
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(255,77,79,0.14);
+    }
+
+    button.delete-btn:hover {
+      transform: translateY(-50%) scale(1.03);
+      box-shadow: 0 8px 22px rgba(255,77,79,0.18);
+      opacity: 1;
+    }
+
+    button#clearAllBtn {
+      align-self: center;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 30px;
+      color: white;
+      background: var(--accent);
+      box-shadow: 0 6px 14px rgba(255, 77, 79, 0.3);
+      margin-top: 20px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button#clearAllBtn:hover {
+      background: #d9363e;
+      box-shadow: 0 6px 16px rgba(255, 77, 79, 0.45);
+    }
+
+    .empty-message,
+    .loading-message {
+      font-size: 1.15rem;
+      color: var(--primary);
+      font-weight: 600;
+      padding: 40px;
+      text-align: center;
+    }
+    /* Header that matches chat page */
+    .main-header {
+      /* full-bleed header background that sticks to top */
+      display: block;
+      background: var(--primary);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 1px 16px rgba(43,50,75,0.11);
+      width: 100%;
+      margin: 0;
+      border-radius: 0;
+    }
+    /* inner centered container so content doesn't span entire width */
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+    }
+    .logo-area { display:flex; align-items:center; gap:12px;padding:10px 0px }
+    .logo { height: 40px; border-radius:10px; }
+    .brand-title { font-weight:700; font-size:1.5rem; }
+    .tagline { display:block; font-weight:600; color: #ffd600; font-size:1rem; margin-top:4px; }
+    nav button {
+      background: #fff;
+      color: var(--primary);
+      border: none;
+      padding: 8px 14px;
+      border-radius: 18px;
+      font-weight:700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(86,97,250,0.12);
+    }
+    nav button:hover { transform: translateY(-2px); }
+  </style>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+
+  <body>
+  <header class="main-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <img src="logo.png" alt="Logo" class="logo" />
+        <div>
+          <span class="brand-title">My Bookmarked AI Messages</span>
+          <span class="tagline">Get your saved messages here!</span>
+        </div>
+      </div>
+    </div>
+  </header>
+  <ul id="bookmarkList">
+    <li class="loading-message">Loading bookmarks...</li>
+  </ul>
+  <button id="clearAllBtn" style="display:none;">Clear All Bookmarks</button>
+
+  <script>
+    
+    // Intercept legacy fetch calls to bookmarks endpoints and respond from localStorage.
+    // This is a safety net in case an older cached page or another script tries to call
+    // the removed server bookmark API. It returns the localStorage data or a 410.
+    try {
+      if (!window.__bookmark_fetch_patch_installed) {
+        const _origFetch = window.fetch;
+        window.fetch = async function(input, init) {
+          try {
+            const url = (typeof input === 'string') ? input : (input && input.url) || '';
+            if (!url) return _origFetch(input, init);
+
+            // Handle getBookmarks
+            const match = url.match(/\/getBookmarks\/([^\/?#]+)/);
+            if (match) {
+              const uid = decodeURIComponent(match[1]);
+              const key = `bookmarks_cache_${uid}`;
+              const raw = localStorage.getItem(key) || '[]';
+              return new Response(raw, { status: 200, headers: { 'Content-Type': 'application/json' } });
+            }
+
+            // Handle deprecated bookmark endpoints
+            if (url.includes('/bookmark') || url.includes('/deleteBookmark') || url.includes('/clearAllBookmarks')) {
+              return new Response(JSON.stringify({ error: 'Bookmarks moved to client-side localStorage.' }), { status: 410, headers: { 'Content-Type': 'application/json' } });
+            }
+
+            return _origFetch(input, init);
+          } catch (e) {
+            return _origFetch(input, init);
+          }
+        };
+        window.__bookmark_fetch_patch_installed = true;
+      }
+    } catch (e) { console.warn('bookmark fetch patch failed', e); }
+
+    if (typeof firebase === 'undefined' || !firebase.apps.length) {
+      try { firebase.initializeApp(firebaseConfig); } 
+      catch (e) { console.error("Firebase init failed:", e); }
+    }
+
+    const auth = firebase.auth();
+    const FLASK_BASE_URL = "http://127.0.0.1:5000";
+    const bookmarkList = document.getElementById('bookmarkList');
+    const clearAllBtn = document.getElementById('clearAllBtn');
+
+    function formatTimestamp(isoString) {
+      if (!isoString) return 'N/A';
+      try {
+        const date = new Date(isoString);
+        return date.toLocaleString('en-IN', {
+          day: '2-digit', month: 'short', year: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        });
+      } catch { return 'N/A'; }
+    }
+
+    // Delete bookmark locally from localStorage; no server calls.
+    function deleteBookmark(userId, bookmarkId) {
+      if (!confirm('Delete this bookmark?')) return;
+      try {
+        if (!userId) { alert('Please log in.'); return; }
+        const key = `bookmarks_cache_${userId}`;
+        const raw = localStorage.getItem(key);
+        if (!raw) { renderBookmarks(userId); return; }
+        let notes = JSON.parse(raw || '[]');
+        const before = notes.length;
+        notes = notes.filter(n => {
+          const nid = n.id || n._id || n.local_id || n.id || n.localId || null;
+          return nid !== bookmarkId;
+        });
+        localStorage.setItem(key, JSON.stringify(notes));
+        // If we removed the last bookmark for this user, clear the last_user pointer
+        if (notes.length === 0) {
+          const last = localStorage.getItem('bookmarks_cache_last_user');
+          if (last === userId) localStorage.removeItem('bookmarks_cache_last_user');
+        }
+        renderBookmarks(userId);
+      } catch (error) {
+        console.error('Delete error:', error);
+        alert(`Error deleting bookmark: ${error.message}`);
+      }
+    }
+
+    async function copyTextToClipboard(text, btn) {
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        btn.style.background = 'var(--success)';
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.style.background = 'var(--primary)';
+        }, 1400);
+      } catch {
+        alert('Copy failed — try manually.');
+      }
+    }
+
+    // Helper: render a bookmark array (used for server results and cached results)
+    function renderBookmarkArray(notes, userId) {
+      bookmarkList.innerHTML = '';
+      if (!notes || !notes.length) {
+        bookmarkList.innerHTML = '<li class="empty-message">No bookmarks yet. Bookmark AI replies to see them here!</li>';
+        return;
+      }
+
+      clearAllBtn.style.display = 'block';
+
+      notes.forEach((note) => {
+        // note may be a cached local object with no id
+        const nid = note.id || note._id || note.local_id || null;
+        const text = note.text || '';
+        const ts = note.timestamp || note.time || null;
+        if (!text) return;
+
+        const li = document.createElement('li');
+
+        const textDiv = document.createElement('div');
+        textDiv.className = 'bookmark-text';
+        textDiv.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        li.appendChild(textDiv);
+
+        const expandBtn = document.createElement('button');
+        expandBtn.className = 'expand-btn';
+        expandBtn.textContent = '▼ Show more';
+        expandBtn.addEventListener('click', () => {
+          const expanded = textDiv.classList.toggle('expanded');
+          expandBtn.textContent = expanded ? '▲ Show less' : '▼ Show more';
+        });
+        li.appendChild(expandBtn);
+
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'bookmark-meta';
+        const time = document.createElement('time');
+        time.textContent = `🕒 Saved: ${formatTimestamp(ts)}`;
+        metaDiv.appendChild(time);
+        textDiv.appendChild(metaDiv);
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'action-btn copy-btn';
+        copyBtn.textContent = 'Copy';
+        copyBtn.addEventListener('click', () => copyTextToClipboard(text, copyBtn));
+        li.appendChild(copyBtn);
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'action-btn delete-btn';
+        delBtn.textContent = 'Delete';
+        delBtn.addEventListener('click', () => deleteBookmark(userId, nid));
+        li.appendChild(delBtn);
+
+        // attach data-id for easier debugging
+        if (nid) li.dataset.bookmarkId = nid;
+        bookmarkList.appendChild(li);
+      });
+    }
+
+    // Render bookmarks from localStorage only (client-side offline-first)
+    function renderBookmarks(userId) {
+      console.debug('renderBookmarks called (localStorage mode)', { userId });
+      bookmarkList.innerHTML = '';
+      clearAllBtn.style.display = 'none';
+
+      if (!userId) {
+        bookmarkList.innerHTML = '<li class="empty-message">Please log in to view your bookmarks.</li>';
+        return;
+      }
+
+      try {
+        const key = `bookmarks_cache_${userId}`;
+        const raw = localStorage.getItem(key);
+        console.debug('reading localStorage key', key, raw ? 'FOUND' : 'MISSING');
+        if (!raw) {
+          bookmarkList.innerHTML = '<li class="empty-message">No bookmarks yet. Bookmark AI replies to see them here!</li>';
+          return;
+        }
+        const notes = JSON.parse(raw || '[]');
+        console.debug('parsed bookmarks count', notes.length, notes.slice(0,5));
+        renderBookmarkArray(notes, userId);
+      } catch (e) {
+        console.error('Error reading bookmarks from localStorage:', e);
+        bookmarkList.innerHTML = `<li class="empty-message" style="color:var(--accent);">⚠️ Error loading bookmarks.</li>`;
+      }
+    }
+
+    // Show cached bookmarks immediately if present (before server fetch completes)
+    function showCachedBookmarksOnLoad() {
+      try {
+        const last = localStorage.getItem('bookmarks_cache_last_user');
+        console.debug('showCachedBookmarksOnLoad last user:', last);
+        if (!last) return;
+        const cached = localStorage.getItem(`bookmarks_cache_${last}`);
+        if (!cached) return;
+        const notes = JSON.parse(cached || '[]');
+        // render a lightweight view while network loads
+        bookmarkList.innerHTML = '';
+        const hint = document.createElement('li');
+        hint.className = 'loading-message';
+        hint.textContent = 'Showing cached bookmarks (offline view).';
+        bookmarkList.appendChild(hint);
+        renderBookmarkArray(notes, last);
+      } catch (e) { console.warn('showCachedBookmarksOnLoad failed', e); }
+    }
+
+    clearAllBtn.addEventListener('click', async () => {
+      if (!auth.currentUser) {
+        alert("Please log in.");
+        return;
+      }
+      if (confirm('Clear ALL bookmarks? This cannot be undone.')) {
+        try {
+          // Clear only localStorage cache for this user (client-side bookmarks)
+          try { localStorage.removeItem(`bookmarks_cache_${auth.currentUser.uid}`); const last = localStorage.getItem('bookmarks_cache_last_user'); if (last === auth.currentUser.uid) localStorage.removeItem('bookmarks_cache_last_user'); } catch(e) { console.warn('Could not clear bookmarks cache', e); }
+          await renderBookmarks(auth.currentUser.uid);
+          alert('All bookmarks cleared (local).');
+        } catch (error) {
+          console.error("Clear error:", error);
+          alert(`Error: ${error.message}`);
+        }
+      }
+    });
+
+    // Render any cached bookmarks immediately to give an offline/fast feel
+    showCachedBookmarksOnLoad();
+
+    
+
+    auth.onAuthStateChanged(user => {
+      renderBookmarks(user ? user.uid : null);
+    });
+
+  // 'Go to chat' button removed; no navigation wiring needed here.
+  </script>
+</body>
+</html>

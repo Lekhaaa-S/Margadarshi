@@ -1,0 +1,253 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #f4f4f9;
+  color: #333;
+  margin: 0;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: #4a6cf7;
+  color: white;
+}
+
+header h1 {
+  margin: 0;
+}
+
+.login-btn {
+  padding: 8px 16px;
+  background: white;
+  color: #4a6cf7;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.login-btn:hover {
+  background: #e3e3ff;
+}
+
+.advantages-list li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #f7c948; /* yellow tick like your design */
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 8px;   /* adds horizontal gap */
+}
+.advantages-list li {
+  margin: 12px 0;
+  padding-left: 35px;  /* space for the tick */
+  line-height: 1.8;
+}
+
+/* Chat */
+.user-msg { text-align: right; background: #d1ffd6; margin: 5px; padding: 5px; border-radius: 5px;}
+.bot-msg { text-align: left; background: #f0f0f0; margin: 5px; padding: 5px; border-radius: 5px;}
+
+/* Cards on homepage */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Responsive columns */
+  gap: 20px 30px; /* Vertical and horizontal gaps */
+  margin: 50px 20px;
+  padding: 0 20px;
+}
+
+.feature-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 240px;  /* Equal height for all cards */
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px #aaa;
+}
+
+.feature-card .icon {
+  font-size: 36px;  /* Slightly bigger icon */
+  margin-bottom: 12px;
+}
+
+.feature-card h3 {
+  margin: 0 0 10px;
+  color: #4a6cf7;
+  font-weight: 600;
+}
+
+.feature-card p {
+  font-size: 16px;
+  color: #555;
+  margin: 0;
+  flex-grow: 1;
+}
+
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px #aaa;
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  color: #4a6cf7;
+}
+
+/* Quiz & other elements */
+.quiz-container { padding: 20px; max-width: 600px; margin: auto; }
+
+.logout-btn {
+  background: #fcfcfc;
+  color: #312dff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background: #ffffff;
+  outline:2px solid #ffd600;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  font-weight: bold;
+}
+.profile-btn {
+  background: #ffffff;
+  color: #312dff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.profile-btn:hover,.profile-btn:focus {
+  background: #ffffff;
+  outline:2px solid #ffd600;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.main-footer {
+  background: #4a6cf7;
+  color: white;
+  padding: 15px 30px;
+  text-align: center;
+  margin-top: 115px;
+  font-size: 17px;
+}
+
+.footer-nav {
+  margin-top: 8px;
+}
+
+.footer-nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.footer-nav a:hover {
+  text-decoration: underline;
+}
+
+
+.faq-section {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.faq-section h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 700;
+  color: #4a6cf7;
+}
+
+.faq-item {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 15px 10px;
+  font-weight: 600;
+  position: relative;
+  transition: font-weight 0.3s ease;
+}
+
+.faq-question::after {
+  content: "+";
+  position: absolute;
+  right: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.faq-question.active {
+  font-weight: 700;
+}
+
+.faq-question.active::after {
+  content: "-";
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  padding: 0 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+.faq-answer p {
+  margin: 10px 0;
+}

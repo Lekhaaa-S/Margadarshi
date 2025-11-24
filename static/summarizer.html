@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Margadarshi PDF Summarizer</title>
+  <link rel="manifest" href="/manifest.json">
+  <!-- PDF.js (vendor) for client-side PDF text extraction -->
+  <script src="/pdf.min.js"></script>
+  <style>
+/* Inlined from summarizer.css to avoid static-serving issues */
+:root {
+  --primary: #4a6cf7;
+  --accent: #ffe600;
+  --bg: #f9fbff;
+  --card-bg: #fff;
+  --text-main: #1a1a44;
+  --text-sub: #555a7d;
+  --border-radius: 12px;
+  --shadow: rgba(74, 108, 247, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: linear-gradient(90deg, var(--primary), #3a4edb);
+  padding: 1rem 2rem;
+  color: white;
+  user-select: none;
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+.header-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-logo img {
+  height: 50px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.header-text h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.header-text .tagline {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 4px;
+}
+
+nav {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-btn {
+  background: white;
+  color: var(--primary);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 8px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.nav-btn:hover {
+  background-color: rgb(190, 190, 255);
+  color: white;
+  box-shadow: 0 0 12px var(--accent);
+  outline: var(--accent);
+}
+
+.container {
+  max-width: 900px;
+  flex-grow: 1;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+section h2 {
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  user-select: none;
+}
+
+.upload-section, .output-section {
+  background: var(--card-bg);
+  padding: 20px 25px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 6px 18px var(--shadow);
+}
+
+input[type="file"] {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+select {
+  padding: 6px 10px;
+  border-radius: var(--border-radius);
+  border: 1px solid #ccc;
+  margin-left: 10px;
+  font-size: 1rem;
+}
+
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 10px 22px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #8e9bfd;
+}
+
+textarea {
+  width: 100%;
+  min-height: 150px;
+  font-size: 1rem;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  border: 1px solid #ccc;
+  resize: vertical;
+  font-family: 'Poppins', sans-serif;
+}
+</style>
+</head>
+<body>
+  <header>
+    <div class="header-main">
+      <div class="header-logo">
+        <img src="logo.png" alt="Margadarshi Logo" />
+        <div class="header-text">
+          <h1>PDF Summarizer</h1>
+          <p class="tagline">Smarter summaries. Instantly.</p>
+        </div>
+      </div>
+      <nav>
+        <button class="nav-btn" onclick="location.href='index.html'">Home</button>
+        <button class="nav-btn logout-btn" onclick="logout()">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="upload-section">
+      <h2>Upload a PDF to Summarize</h2>
+      <input type="file" id="pdfInput" accept="application/pdf" />
+      <label for="summaryLength">Choose summary length:</label>
+      <select id="summaryLength">
+        <option value="100">100 words</option>
+        <option value="250" selected>250 words</option>
+        <option value="500">500 words</option>
+      </select>
+      <button id="summarizeBtn" disabled>Generate Summary</button>
+    </section>
+
+    <section class="output-section">
+      <h2>Summary</h2>
+      <textarea id="summaryOutput" readonly placeholder="Your summary will appear here..."></textarea>
+      <h3>Saved summaries (offline)</h3>
+      <div id="savedList">
+        <!-- Saved summaries will be listed here -->
+      </div>
+
+    </section>
+  </main>
+
+  <script src="summarizer.js"></script>
+</body>
+</html>

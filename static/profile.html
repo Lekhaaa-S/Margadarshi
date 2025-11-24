@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Profile | Margadarshi</title>
+  <link rel="stylesheet" href="profile.css" />
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo-area">
+      <img src="logo.png" alt="Margadarshi Logo" class="logo" />
+      <span class="brand-title">
+        Profile Section
+        <span class="tagline">Your learning journey at a glance</span>
+      </span>
+    </div>
+    <nav class="nav-buttons">
+      <button class="header-btn" onclick="window.location.href='index.html'">Home</button>
+      <button class="header-btn" onclick="window.location.href='chat.html'">Go to Chat</button>
+      <button class="header-btn danger" onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <main class="profile-main">
+    <section class="profile-container">
+      <h1>Edit Your Profile</h1>
+      <form id="profileForm" novalidate>
+        <label for="name">Full Name</label>
+        <input id="name" name="name" type="text" placeholder="Enter your name" required />
+
+        <label for="examGoal">Your Exam/Goal</label>
+        <input id="examGoal" name="examGoal" type="text" placeholder="E.g., Semester Exams, Placements" />
+
+        <label for="futureAim">Future Aim</label>
+        <input id="futureAim" name="futureAim" type="text" placeholder="E.g., Software Engineer, MBA" />
+
+        <label>Hobbies & Interests</label>
+        <div class="add-subject">
+          <input id="new-subject" type="text" placeholder="Enter a hobby and press Add or Enter" />
+          <button id="add-subject-btn" type="button">Add</button>
+        </div>
+        <div id="subject-list" class="subject-list"></div>
+        <small class="muted">Example: Painting, Coding, Music, Reading</small>
+
+        <button type="submit" class="save-btn">Save Profile</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>

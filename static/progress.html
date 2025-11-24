@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Progress Tracker | Mentor Bot</title>
+  <link rel="stylesheet" href="progress.css" />
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo-area">
+      <img src="logo.png" alt="Progress Tracker Logo" class="logo" />
+      <span class="brand-title">
+        Progress Tracker
+        <span class="tagline">Your journey, visualized & celebrated! 🚀</span>
+      </span>
+    </div>
+    <div class="nav-buttons">
+  <a href="index.html" class="btn header-btn">Home</a>
+  <a href="#" class="btn header-btn danger" onclick="logout(); return false;">Logout</a>
+    </div>
+  </header>
+  <main class="container">
+    <section class="topbar">
+      <div class="header-meta">
+        <div id="streak" class="streak">Streak: <strong>0 🔥</strong></div>
+        <div id="syncStatus" class="sync-status">Sync: <strong>unknown</strong></div>
+      </div>
+    </section>
+    <section class="card subjects-section">
+      <h2>Subjects</h2>
+      <form id="add-subject-form" class="add-subject-form">
+        <input type="text" id="newSubjectName" placeholder="New subject name" required />
+        <input type="number" id="newSubjectModules" placeholder="Total modules" min="0" />
+        <button type="submit" class="btn primary">Add Subject</button>
+      </form>
+      <div class="subjects-list" id="subjects-list"></div>
+      <div class="subjects-actions">
+        <button id="btn-save-progress" class="btn primary">Save Progress</button>
+      </div>
+    </section>
+    <section class="overview card">
+      <h2>Overall Progress</h2>
+      <div class="overall-bar">
+        <div id="overall-fill" class="overall-fill" style="width:0%"></div>
+      </div>
+      <div class="overall-meta">
+        <span id="overall-percent">0%</span>
+        <span id="motivation" class="motivation">Keep going — small steps win!</span>
+      </div>
+      <h3>Top Weak Topics</h3>
+      <ul id="weak-topics" class="weak-list"></ul>
+      <button id="btn-get-tips" class="btn small">Get Tips</button>
+    </section>
+    <section class="card quizzes-section">
+      <h2>Quiz History</h2>
+      <table class="quiz-table" id="quiz-table">
+        <thead>
+          <tr>
+            <th>Quiz</th>
+            <th>Subject</th>
+            <th>Score</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+    <section class="card extras quote-card">
+      <div>
+        <h3>Motivation</h3>
+        <blockquote id="motivation-quote">Every little effort counts. Progress is progress!</blockquote>
+        <button class="btn tiny" id="newQuoteBtn">New Quote</button>
+      </div>
+      <div class="streak-details">
+        <h3>Study Streak</h3>
+        <p id="streak-text">— days in a row</p>
+      </div>
+    </section>
+  </main>
+  <template id="subject-template">
+    <div class="subject-item">
+      <div class="subject-row">
+        <span class="subject-name"></span>
+        <div class="subject-actions">
+          <span class="subject-progress"></span>
+          <button class="expand-btn">&#9660;</button>
+          <button class="remove-subject small danger">Remove</button>
+        </div>
+      </div>
+      <div class="progress-bar subject-bar">
+        <div class="progress-fill"></div>
+      </div>
+      <div class="module-list-panel hidden">
+        <div class="module-list"></div>
+      </div>
+    </div>
+  </template>
+  <script src="progress.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</body>
+</html>
+ 

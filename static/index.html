@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Margadarshi – Your Friendly AI Learning Mentor Dashboard</title>
+  <link rel="stylesheet" href="index.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+<header>
+  <div class="header-main">
+    <div class="header-logo">
+      <img src="logo.png" alt="Margadarshi Logo" />
+      <div class="header-text">
+        <h1 class="header-title">Margadarshi-Aapka Dost❤️</h1>
+        <p class="header-tagline">Empowering Students, Every Step of the Way ⚡</p>
+      </div>
+    </div>
+    <div class="user-controls">
+      <span id="welcomeUser"></span>
+      <button class="profile-btn" onclick="goProfile()">Profile</button>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="marquee-container" aria-label="Motivational quotes marquee">
+    <div id="marqueeText" class="marquee-text"></div>
+  </div>
+</header>
+
+  <section class="welcome">
+    <center><h2>Welcome 😊</h2>
+      <p>Your Personal Mentor for Learning and Growth</p>
+    </center>
+  </section>
+  <section class="features">
+  <div class="card" onclick="goChat()">
+    <h3>💬 Chat Section</h3>
+    <p>Ask questions and get instant answers.</p>
+  </div>
+  <div class="card" onclick="goQuiz()">
+    <h3>🧠 Quiz Section</h3>
+    <p>Test your knowledge with interactive quizzes.</p>
+  </div>
+  <div class="card" onclick="goProgress()">
+    <h3>📈 Progress Tracker</h3>
+    <p>Track completed topics and scores.</p>
+  </div>
+  <div class="card" onclick="goStudyRoom()">
+    <h3>🤝 Collaborative Study Room</h3>
+    <p>Learn together with your peers.</p>
+  </div>
+  <div class="card" onclick="goSummarizer()">
+    <h3>📄 Summarizer</h3>
+    <p>Upload your PDFs and get instant summaries powered by AI.</p>
+  </div>
+</section>
+  <footer class="main-footer">
+  <div class="footer-content">
+    <p>© 2025 Margadarshi • Made with ❤️ By Students, For Students</p>
+    <!--<nav class="footer-nav">
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy</a>
+    </nav>-->
+  </div>
+</footer>
+  <!-- Firebase SDK (compat) required by the app for auth/firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+  <!-- App-wide Firebase initializer + helpers -->
+  <script src="firebase.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>

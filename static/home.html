@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Margadarshi – Your Friendly AI Learning Mentor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="home.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo-area">
+      <img src="logo.png" alt="Margadarshi Logo" class="logo" />
+      <span class="brand-title">Margadarshi <span class="tagline">Your Friendly AI Mentor</span></span>
+    </div>
+    <nav>
+      <a href="#features">What We Offer</a>
+      <a href="#advantages">Why Choose Us?</a>
+      <button class="login-btn" onclick="goLogin()">Login / Register</button>
+    </nav>
+  </header>
+
+  <section class="hero scroll-reveall">
+    <img src="AI image.png" alt="Friendly AI Mentor" class="hero-img" />
+    <div class="hero-content">
+      <h1>Empower Your Learning Journey with <span class="highlight">Margadarshi</span></h1>
+      <p class="subheading">
+        Personalized, engaging, and ever-ready support — your AI-powered companion for academic success and growth.<br>
+        (Which works both online and offline!)
+      </p>
+      <button class="cta-btn" onclick="goLogin()">Join Us Now</button>
+    </div>
+  </section>
+
+  <section class="features scroll-reveal" id="features">
+    <h2>Features That Make Learning Fun and Easy</h2>
+    <div class="feature-grid">
+      <article class="feature-card">
+        <span class="icon">🤖</span>
+        <h3>24/7 AI Mentor Chat</h3>
+        <p>Ask questions anytime and get instant, clear answers tailored just for you.</p>
+      </article>
+
+      <article class="feature-card">
+        <span class="icon">🎯</span>
+        <h3>Adaptive Quizzes</h3>
+        <p>Challenge yourself with topic-focused quizzes that grow with your progress.</p>
+      </article>
+
+      <article class="feature-card">
+        <span class="icon">📊</span>
+        <h3>Smart Progress Tracking</h3>
+        <p>Watch your achievements, identify strengths, and focus on areas to improve.</p>
+      </article>
+
+      <article class="feature-card">
+        <span class="icon">🤝</span>
+        <h3>Collaborative Study Rooms</h3>
+        <p>Connect with peers, share insights, and stay motivated together.</p>
+      </article>
+      <article class="feature-card">
+        <span class="icon">📄</span>
+        <h3>PDF Summarizer</h3>
+        <p>Upload & get concise AI-powered summaries effortlessly.</p>
+      </article>
+
+    </div>
+  </section>
+
+
+
+  <section class="advantages" id="advantages">
+    <h2>Why Students Love Margadarshi</h2>
+    <ul>
+      <li>Tailored learning paths created just for you</li>
+      <li>Positive encouragement and motivation built-in</li>
+      <li>Access anytime, at home or on the go</li>
+      <li>Safe, simple login with full privacy</li>
+    </ul>
+  </section>
+<section class="faq-section scroll-reveal">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <button class="faq-question">How can Margadarshi help me in my preparation?</button>
+    <div class="faq-answer">
+      <p>Margadarshi provides personalized AI mentorship 24/7, adaptive quizzes, progress tracking, and collaborative study rooms to effectively support your learning journey.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">Is Margadarshi free to use?</button>
+    <div class="faq-answer">
+      <p>Yes, Margadarshi offers a free basic plan. Additional premium features will be available via subscription soon.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">How can I access Margadarshi? Is it available on all devices?</button>
+    <div class="faq-answer">
+      <p>Margadarshi is accessible on all modern desktop and mobile browsers and supports both online and offline usage.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">How do I get my academic doubts or account issues resolved?</button>
+    <div class="faq-answer">
+      <p>Use the 24/7 AI Mentor Chat for academic queries and the support section for account or technical help.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">Does Margadarshi support vernacular languages like Hindi, Tamil, Telugu, etc.?</button>
+    <div class="faq-answer">
+      <p>Multilingual support is planned soon to make Margadarshi accessible in multiple vernacular languages.</p>
+    </div>
+  </div>
+
+</section>
+
+  <footer>
+    <div class="footer-content">
+      <p>© 2025 Margadarshi • Made with ❤️ by students, for students</p>
+      <nav class="footer-nav">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy.html">Privacy</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    function goLogin() {
+      window.location.href = "login.html";
+    }
+    // FAQ accordion toggle
+document.querySelectorAll('.faq-question').forEach(question => {
+  question.addEventListener('click', () => {
+    question.classList.toggle('active');
+    const answer = question.nextElementSibling;
+    if (question.classList.contains('active')) {
+      answer.style.maxHeight = answer.scrollHeight + "px";
+    } else {
+      answer.style.maxHeight = null;
+    }
+  });
+});
+
+  </script>
+</body>
+</html>

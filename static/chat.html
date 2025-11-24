@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Margadarshi – AI Mentor Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="chat.css" />
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo-area">
+      <img src="logo.png" alt="Margadarshi Logo" class="logo" />
+      <span class="brand-title">Chat Section <span class="tagline">Clear your doubts and also get motivated!</span></span>
+    </div>
+    <nav>
+      <button onclick="goHome()">Home</button>
+      <button onclick="openProfile()">Profile</button>
+      <button onclick="window.open('bookmarks.html', '_blank')">View Bookmarks</button>
+      
+      <button onclick="clearAllChats()" class="start-fresh-btn">Start Fresh</button>
+      
+      <button onclick="logout()" style="margin-left:auto;">Logout</button>
+    </nav>
+  </header>
+
+  <div class="motiv-banner" id="motivationBanner"></div>
+
+  <div class="action-bar" id="actionBar" style="display:none;">
+    <span id="selectedCount">0 selected</span>
+    <div class="action-buttons">
+      <button onclick="editSelected()">Edit</button>
+      <button onclick="deleteSelected()">Delete</button>
+      <button onclick="bookmarkSelected()">Bookmark</button>
+      <button onclick="copySelected()">Copy</button>
+    </div>
+  </div>
+
+
+  <main class="chat-container" id="chatContainer"></main>
+  <div id="typingIndicator" class="typing-indicator" style="display:none;">
+    <span class="bubble"></span>
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <span class="typing-text">Margadarshi is typing...</span>
+  </div>
+
+<form class="prompt-area" id="chatForm" onsubmit="return false;" autocomplete="off">
+    <div class="input-row">
+      <div class="input-file-group">
+        <input type="file" id="fileInput" accept="image/*,application/pdf" style="display:none;" />
+        <div class="button-tooltip-group">
+          <button type="button" id="fileBtn" tabindex="0">
+            <img src="imageupload.png" alt="Upload File" />
+          </button>
+          <div class="tooltip upload-tooltip">Upload File</div>
+        </div>
+      </div>
+      <div id="filePreview" class="file-preview"></div>
+      <textarea id="prompt" placeholder="Type your message here..." rows="1"></textarea>
+      <div class="button-tooltip-group">
+        <button type="button" id="submitBtn">
+          <img src="send.png" alt="Send" />
+        </button>
+        <div class="tooltip send-tooltip">Send</div>
+      </div>
+    </div>
+  </form>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script src="chat.js"></script>
+</body>
+</html>

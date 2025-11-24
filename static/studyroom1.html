@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Margadarshi Study Room</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="studyroom1.css" />
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="logo-area">
+            <img src="logo.png" alt="Margadarshi Logo" class="logo" />
+            <span class="brand-title">📘 Collaborative Study Room <span class="tagline">Share ideas, discuss topics, and study efficiently together!</span></span>
+        </div>
+            <nav>
+            <button class="back-btn" id="homeBtn">Home</button>
+            <button class="logout-btn" id="logoutBtn" onclick="logout()">Logout</button>
+        </nav>
+    </header>
+
+    <div class="app-container fade-in">
+        <div class="modal" id="roomModal">
+            <div class="modal-content">
+                <h2>Start or Join a Study Room 🤝</h2>
+                <p class="modal-desc">Connect with your peers and begin collaborative learning!</p>
+
+                <input id="displayNameInput" placeholder="Enter your display name" maxlength="20" />
+
+                <button id="createRoomBtn" class="btn primary">Create Room</button>
+                <span>or</span>
+                <button id="joinRoomBtn" class="btn">Join Existing Room</button>
+
+                <form id="roomJoinForm" class="hidden fade-in">
+                    <input id="joinRoomId" name="roomId" placeholder="Room ID" maxlength="10" />
+                    <input id="joinPasscode" name="passcode" type="password" placeholder="Passcode" />
+                    <button id="doJoinBtn" type="submit" class="btn primary">Join Room</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="main-layout hidden" id="mainLayout">
+            <aside class="side-panel">
+                <div class="panel-block">
+                    <h2>Room Information</h2>
+                    <div id="roomIdDisplay"></div>
+                    <div id="passcodeDisplay"></div>
+                </div>
+
+                <div class="panel-block" id="quizLeaderboardPanel">
+                    <h2>Group Quiz & Leaderboard</h2>
+                    <button id="startQuizBtn" class="btn primary">Start Group Quiz</button>
+                    <button id="viewLeaderboardBtn" class="btn">View Leaderboard</button>
+                    <div id="quizContainer" class="hidden"></div>
+                    <div id="leaderboardContainer" class="hidden"></div>
+                </div>
+
+            </aside>
+
+            <main class="content-panel">
+                <section class="chat-area">
+                    <div class="chat-tabs">
+                        <button id="groupTab" class="tab-btn selected">Group Discussion</button>
+                        <button id="aiTab" class="tab-btn">🤖 AI Study Partner</button>
+                    </div>
+
+                    <div id="groupChatBox" class="chat-box"></div>
+                    <div id="aiChatBox" class="chat-box hidden"></div>
+
+                    <div class="chat-input-bar">
+                        <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off" />
+
+                        <label for="fileInput" class="custom-file-label" style="cursor:pointer; margin-left: 10px;">
+                            <img src="imageupload.png" alt="Upload File" class="upload-icon" style="width: 40px; height: 40px;" />
+                        </label>
+                        <input type="file" id="fileInput" accept=".pdf,image/*" style="display:none;" />
+
+                        <button id="sendBtn" type="button" class="send-btn" style="background:none; border:none; padding:0; margin-left: 10px; cursor:pointer;">
+                            <img src="send.png" alt="Send Message" class="send-icon" style="width: 40px; height: 40px;" />
+                        </button>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <div id="toastContainer"></div>
+    <div class="modal hidden" id="quizModal">
+        <div class="modal-content">
+            <h2>Create Group Quiz</h2>
+            <p class="modal-desc">Provide quiz name, number of questions, per-question time (sec), and upload a PDF source (optional).</p>
+
+            <label>Quiz name</label>
+            <input id="quizNameInput" placeholder="Enter quiz name" maxlength="80" />
+
+            <label>Number of questions</label>
+            <input id="numQuestionsInput" type="number" min="1" max="50" value="3" />
+
+            <label>Per-question time (seconds)</label>
+            <input id="perQuestionTimeInput" type="number" min="5" max="300" value="30" />
+
+            <label>Upload PDF (optional)</label>
+            <input id="quizFileInput" type="file" accept=".pdf" />
+
+            <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end;">
+                <button id="quizCancelBtn" class="btn">Cancel</button>
+                <button id="quizSubmitBtn" class="btn primary">Start Quiz</button>
+            </div>
+        </div>
+    </div>
+    <!-- Firebase compat SDK + app initializer so `window.logout` and `auth` are available -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script type="module" src="studyroom1.js"></script>
+    <script src="quick-fix.js"></script>
+</body>
+
+</html>

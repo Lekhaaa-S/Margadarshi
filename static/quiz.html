@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI-Powered Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="quiz.css" />
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo-area">
+      <img class="logo" src="logo.png" width="48" height="48" alt="MG logo" loading="lazy">
+      <span class="brand-title">Quiz Section <span class="tagline">Time to test your knowledge!</span></span>
+    </div>
+    <nav>
+      <button class="back-btn" onclick="goHome()">Home</button>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <div class="container fade-in">
+    <h1 id="quiz-title">Quiz-Ready?</h1>
+
+    <!-- Initial selection: choose quiz type -->
+    <div id="quiz-type-selection" class="quiz-type-selection">
+      <h2>Select Quiz Type</h2>
+      <button id="normalQuizBtn">Normal Quiz</button>
+      <button id="pdfQuizBtn">Quiz from PDF</button>
+    </div>
+
+    <!-- Normal Quiz Setup -->
+    <div id="normal-quiz-setup" class="quiz-setup hidden fade-in">
+      <h2>Select Category, Difficulty & No. of Questions</h2>
+      <select id="categorySelect">
+        <option value="">-- Select Category --</option>
+        <!-- Categories loaded dynamically -->
+      </select>
+      <div class="custom-topic-center">
+        <input type="text" id="customTopicInput" placeholder="Or enter topic for 'Others'" class="hidden centered-input" />
+      </div>
+      <select id="difficultySelect">
+        <option value="">Any Difficulty</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <select id="amountSelect">
+        <option value="5">5 Questions</option>
+        <option value="10">10 Questions</option>
+        <option value="20">20 Questions</option>
+      </select>
+      <select id="timerSelect">
+        <option value="30">30 Seconds</option>
+        <option value="60">60 Seconds</option>
+        <option value="0">No Timer</option>
+      </select>
+      <label>
+        <input type="checkbox" id="adaptiveToggle" />
+        Enable Adaptive Mode
+      </label>
+      <button id="startNormalQuizBtn">Start Normal Quiz</button>
+      <button id="backToTypeSelect1">Back</button>
+    </div>
+
+    <!-- PDF Quiz Setup -->
+    <div id="pdf-quiz-setup" class="quiz-setup hidden fade-in">
+      <h2>Upload PDF and Select Difficulty & No. of Questions</h2>
+      <input type="file" id="pdfInput" accept="application/pdf" />
+      <iframe id="pdfPreview" class="hidden" width="100%" height="300"></iframe>
+      <select id="pdfDifficultySelect">
+        <option value="">Any Difficulty</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <select id="pdfAmountSelect">
+        <option value="5">5 Questions</option>
+        <option value="10">10 Questions</option>
+        <option value="20">20 Questions</option>
+      </select>
+      <select id="timerSelect">
+        <option value="30">30 Seconds</option>
+        <option value="60">60 Seconds</option>
+        <option value="0">No Timer</option>
+      </select>
+      <div class="pdf-topic-rename hidden">
+        <label for="pdfTopicName">Rename Topic or File for Quiz:</label>
+        <input type="text" id="pdfTopicName" placeholder="Enter new topic or keep file name" />
+      </div>
+      <button id="startPdfQuizBtn" disabled>Start PDF Quiz</button>
+      <button id="generateOfflinePdfBtn" disabled>Generate Offline Quiz (50)</button>
+      <!--<button id="takeOfflineQuizBtn">Take Offline Quiz</button>-->
+      <button id="backToTypeSelect2">Back</button>
+    </div>
+
+    <!-- Quiz Section -->
+    <div class="quiz-section hidden fade-in">
+      <div class="progress-bar"><div class="progress"></div></div>
+      <div id="questionCounter" class="question-counter"></div>
+      <div class="timer" id="timer">30</div>
+      <h2 id="question"></h2>
+      <div class="options"></div>
+      <button id="explain" class="hidden">Explain Answer</button>
+      <div id="explanation" class="explanation hidden"></div>
+      <button id="next" disabled>Next</button>
+      <div id="result" class="hidden"></div>
+      <button id="restartQuiz" class="restart-btn hidden">Restart</button>
+      <button id="goToProgressBtn" class="restart-btn hidden">Go to Progress Tracker</button>
+    </div>
+
+    <!-- Local quizzes stored for offline use (dropdown) -->
+    <div id="local-quizzes" class="quiz-setup fade-in local-quizzes collapsed">
+      <button class="dropdown-header" type="button"><span>Locally Stored Quizzes (Offline)</span><span class="caret">▾</span></button>
+      <div class="dropdown-body">
+        <ul id="localQuizList">
+          <!-- populated by script -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- Performance Dashboard -->
+    <div id="performanceDashboard" class="hidden fade-in">
+      <h2>Result:</h2>
+      <ul>
+        <li>Accuracy: <span id="accuracyStat">0%</span></li>
+        <li>Average Time per Question: <span id="avgTimeStat">0s</span></li>
+        <li>Badges Earned: <span id="badgesEarned">None</span></li>
+      </ul>
+      <div class="perf-btns">
+        <button id="restartQuizPerf" class="restart-btn">Restart Quiz</button>
+        <button id="goToProgressPerf" class="restart-btn">Go to Progress Tracker</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="correctSound" src="correct.mp3"></audio>
+  <audio id="wrongSound" src="wrong.mp3"></audio>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.8.162/pdf.min.js"></script>
+  <script src="quiz.js"></script>
+  <!-- Buttons for PDF offline flows are wired in script.js -->
+    <script>
+      // Register service worker for offline support
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('service-worker.js').then(reg => {
+            console.log('Service Worker registered.', reg);
+            // Ask the worker to precache assets (helps ensure Cache Storage is populated during testing)
+            navigator.serviceWorker.ready.then(r => {
+              if (r.active) {
+                try { r.active.postMessage({ type: 'PRECACHE' }); }
+                catch(e){ console.warn('PRECACHE postMessage failed', e); }
+              }
+            });
+          }).catch(err => {
+            console.warn('Service Worker registration failed:', err);
+          });
+          // As a fallback (if service worker caching fails or is blocked), attempt to cache core assets from the page
+          if ('caches' in window) {
+            caches.open('app-cache-v4').then(cache => {
+              // Use relative asset paths so the dev server (Live Server) can resolve files from the same folder
+              const assets = ['quiz.html', 'progress.html', 'quiz.css', 'progress.css', 'quiz.js', 'index.js', 'progress.js', 'correct.mp3', 'wrong.mp3', 'favicon.ico'];
+              cache.addAll(assets).then(() => console.log('Fallback precache complete')).catch(e => console.warn('Fallback precache failed', e));
+            }).catch(e => console.warn('Failed to open caches for fallback precache', e));
+          }
+        });
+      }
+    </script>
+     <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</body>
+</html>
