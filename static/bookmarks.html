@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>My Bookmarks | Margadarshi</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#4a6cf7">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -250,6 +252,7 @@
   </ul>
   <button id="clearAllBtn" style="display:none;">Clear All Bookmarks</button>
 
+  <script src="/sw-register.js"></script>
   <script>
     
     // Intercept legacy fetch calls to bookmarks endpoints and respond from localStorage.

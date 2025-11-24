@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Mentor Bot - Login</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#4a6cf7">
   <link rel="stylesheet" href="login.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -95,6 +97,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
 <!-- 3. Load your configuration, which sets up global 'auth' and 'db' -->
 <script src="firebase.js"></script>
+<script src="/sw-register.js"></script>
 <!-- 4. Load your application logic, which relies on the global variables -->
 <script src="login.js"></script>
 </body>
